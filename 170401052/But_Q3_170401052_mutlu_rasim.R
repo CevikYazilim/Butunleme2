@@ -1,0 +1,27 @@
+
+
+library(dplyr)
+
+jobs$Revenue <- ifelse(jobs$Revenue == "-1", "Unknown / Non-Applicable", jobs$Revenue)
+
+my.ordered.levels <- c(
+  "Less than $1 million (USD)",
+  "$1 to $5 million (USD)",
+  "$5 to $10 million (USD)",
+  "$10 to $25 million (USD)",
+  "$25 to $50 million (USD)",
+  "$50 to $100 million (USD)",
+  "$100 to $500 million (USD)",
+  "$500 million to $1 billion (USD)",
+  "$1 to $2 billion (USD)",
+  "$2 to $5 billion (USD)",
+  "$5 to $10 billion (USD)",
+  "$10+ billion (USD)",
+  "Unknown / Non-Applicable"
+)
+
+jobs$Revenue.ordered <- factor(jobs$Revenue, ordered = TRUE, levels = my.ordered.levels)
+
+results <- jobs %>%
+  group_by(Revenue.ordered) %>%
+  summarise(mean_salary = mean(Salary, na.rm = TRUE))
